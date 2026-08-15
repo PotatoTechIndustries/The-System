@@ -1,0 +1,10 @@
+{
+  "name": "The System",
+  "short_name": "The System",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "Shift worker tracker for exercises, meals, and weight.",
+  "icons": []
+}

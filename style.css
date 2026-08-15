@@ -1,0 +1,632 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap');
+
+:root {
+    --bg-main: #020612; /* Deep dark space black */
+    --sys-blue: #2563eb;
+    --sys-light-blue: #93c5fd;
+    --sys-glow: rgba(147, 197, 253, 0.4);
+    --sys-red: #ef4444;
+    --sys-red-glow: rgba(239, 68, 68, 0.4);
+    --sys-panel: rgba(6, 16, 32, 0.72); /* Sleek semi-transparent dark HUD glass */
+    --border-thin: 1px solid rgba(147, 197, 253, 0.35); /* Crisp cyan borders */
+    --border-glow: 0 0 25px rgba(59, 130, 246, 0.22), inset 0 0 15px rgba(59, 130, 246, 0.12);
+    --font-system: 'Rajdhani', sans-serif;
+    --success: #22c55e;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background-color: var(--bg-main);
+    color: #fff;
+    font-family: var(--font-system);
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 6rem;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Starfield Background Layer */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    pointer-events: none;
+    background-image: 
+        radial-gradient(1px 1px at 30px 40px, #fff, transparent),
+        radial-gradient(1px 1px at 100px 150px, rgba(255,255,255,0.8), transparent),
+        radial-gradient(1.5px 1.5px at 200px 80px, #fff, transparent),
+        radial-gradient(1px 1px at 280px 300px, rgba(147, 197, 253, 0.8), transparent),
+        radial-gradient(2px 2px at 50px 280px, #fff, transparent),
+        radial-gradient(1px 1px at 150px 400px, #fff, transparent),
+        radial-gradient(1.5px 1.5px at 230px 220px, rgba(255,255,255,0.7), transparent),
+        radial-gradient(1px 1px at 320px 120px, #fff, transparent),
+        radial-gradient(2px 2px at 450px 60px, rgba(147, 197, 253, 0.9), transparent),
+        radial-gradient(1.5px 1.5px at 500px 320px, #fff, transparent),
+        radial-gradient(1px 1px at 550px 180px, rgba(255,255,255,0.5), transparent);
+    background-size: 550px 550px;
+    opacity: 0.55;
+    z-index: -2;
+}
+
+/* Space Nebula Glowing Overlay */
+.energy-glow {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+        radial-gradient(circle at 15% 20%, rgba(59, 130, 246, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(29, 78, 216, 0.09) 0%, transparent 60%);
+    z-index: -1;
+    filter: blur(30px);
+    pointer-events: none;
+}
+
+/* Cyber-grid Overlay with subtle blueprint texture */
+.energy-grid {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: 
+        linear-gradient(90deg, rgba(59, 130, 246, 0.035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(59, 130, 246, 0.035) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -3;
+    pointer-events: none;
+}
+
+#app {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem;
+    position: relative;
+    z-index: 10;
+}
+
+/* Solo Leveling Sleek Anime HUD Panel */
+.sys-panel {
+    background: 
+        radial-gradient(ellipse at 50% 0%, rgba(59, 130, 246, 0.12) 0%, transparent 75%),
+        linear-gradient(135deg, rgba(147, 197, 253, 0.015) 25%, transparent 25%),
+        var(--sys-panel);
+    border: var(--border-thin);
+    box-shadow: var(--border-glow);
+    padding: 2.25rem 1.75rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    backdrop-filter: blur(14px);
+}
+
+/* All 4 Sides: Top, Bottom, Left, Right Techy Wave & Notched Circuit Rails */
+.sys-panel::before {
+    content: '';
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    pointer-events: none;
+    background-image: 
+        /* Top notched rail */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%2393c5fd" opacity="0.75"><rect x="15" y="0" width="35" height="2"/><rect x="65" y="1" width="15" height="2"/><rect x="95" y="0" width="50" height="3"/><rect x="180" y="0" width="60" height="2"/><rect x="255" y="1" width="15" height="2"/><rect x="285" y="0" width="45" height="3"/><rect x="345" y="1" width="25" height="2"/></svg>'),
+        /* Bottom notched rail */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%2393c5fd" opacity="0.75"><rect x="25" y="2" width="45" height="2"/><rect x="85" y="1" width="20" height="3"/><rect x="140" y="2" width="30" height="2"/><rect x="210" y="1" width="60" height="3"/><rect x="290" y="2" width="25" height="2"/><rect x="330" y="1" width="40" height="3"/></svg>'),
+        /* Left notched rail */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 4 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%2393c5fd" opacity="0.75"><rect x="0" y="25" width="2" height="40"/><rect x="1" y="85" width="2" height="15"/><rect x="0" y="130" width="3" height="50"/><rect x="0" y="210" width="2" height="55"/><rect x="1" y="285" width="2" height="20"/><rect x="0" y="325" width="3" height="45"/></svg>'),
+        /* Right notched rail */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 4 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%2393c5fd" opacity="0.75"><rect x="2" y="30" width="2" height="45"/><rect x="1" y="95" width="2" height="18"/><rect x="1" y="145" width="3" height="50"/><rect x="2" y="225" width="2" height="40"/><rect x="1" y="285" width="2" height="25"/><rect x="1" y="335" width="3" height="35"/></svg>');
+    background-position: 
+        top center, bottom center, left center, right center;
+    background-size: 
+        calc(100% - 50px) 4px, calc(100% - 50px) 4px, 4px calc(100% - 50px), 4px calc(100% - 50px);
+    background-repeat: no-repeat;
+}
+
+/* Offset Tech Corner Caps & Side Stepped Notch Tabs */
+.sys-panel::after {
+    content: '';
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    pointer-events: none;
+    background-image: 
+        /* 4 Offset Corner Brackets */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="3.5" stroke-linecap="square"><path d="M 5,22 V 5 H 22"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="3.5" stroke-linecap="square"><path d="M 95,22 V 5 H 78"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="3.5" stroke-linecap="square"><path d="M 5,78 V 95 H 22"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="3.5" stroke-linecap="square"><path d="M 95,78 V 95 H 78"/></svg>'),
+        /* Side Tech Stepped Notch Tabs */
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="2"><path d="M 8,5 H 2 V 55 H 8"/><rect x="0" y="20" width="3" height="20" fill="%2393c5fd" opacity="0.6"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 10 60" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="%2393c5fd" stroke-width="2"><path d="M 2,5 H 8 V 55 H 2"/><rect x="7" y="20" width="3" height="20" fill="%2393c5fd" opacity="0.6"/></svg>');
+    background-position: 
+        top left, top right, bottom left, bottom right,
+        left center, right center;
+    background-size: 
+        22px 22px, 22px 22px, 22px 22px, 22px 22px,
+        6px 50px, 6px 50px;
+    background-repeat: no-repeat;
+}
+
+/* Penalty tech corners (glowing red) */
+.sys-panel.penalty {
+    border-color: rgba(239, 68, 68, 0.45);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.25), inset 0 0 15px rgba(239, 68, 68, 0.15);
+    background: rgba(45, 10, 10, 0.72);
+}
+
+.sys-panel.penalty::before {
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%23ef4444" opacity="0.75"><rect x="15" y="0" width="35" height="2"/><rect x="65" y="1" width="15" height="2"/><rect x="95" y="0" width="50" height="3"/><rect x="180" y="0" width="60" height="2"/><rect x="255" y="1" width="15" height="2"/><rect x="285" y="0" width="45" height="3"/><rect x="345" y="1" width="25" height="2"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%23ef4444" opacity="0.75"><rect x="25" y="2" width="45" height="2"/><rect x="85" y="1" width="20" height="3"/><rect x="140" y="2" width="30" height="2"/><rect x="210" y="1" width="60" height="3"/><rect x="290" y="2" width="25" height="2"/><rect x="330" y="1" width="40" height="3"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%23ef4444" opacity="0.75"><rect x="0" y="25" width="2" height="40"/><rect x="1" y="85" width="2" height="15"/><rect x="0" y="130" width="3" height="50"/><rect x="0" y="210" width="2" height="55"/><rect x="1" y="285" width="2" height="20"/><rect x="0" y="325" width="3" height="45"/></svg>'),
+        url('data:image/svg+xml;utf8,<svg viewBox="0 0 400 4" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" fill="%23ef4444" opacity="0.75"><rect x="2" y="30" width="2" height="45"/><rect x="1" y="95" width="2" height="18"/><rect x="1" y="145" width="3" height="50"/><rect x="2" y="225" width="2" height="40"/><rect x="1" y="285" width="2" height="25"/><rect x="1" y="335" width="3" height="35"/></svg>');
+}
+
+/* Window Controls Decorator */
+.win-controls {
+    position: absolute;
+    top: 8px; right: 12px;
+    color: rgba(147, 197, 253, 0.45);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    pointer-events: none;
+    font-weight: bold;
+    z-index: 5;
+}
+
+.sys-panel.penalty .win-controls {
+    color: rgba(239, 68, 68, 0.45);
+}
+
+/* Titles */
+h1, h2, h3 {
+    letter-spacing: 2.5px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(147, 197, 253, 0.8), 0 0 20px rgba(59, 130, 246, 0.6);
+    font-weight: 700;
+}
+
+.glow-red {
+    color: #ffffff !important;
+    text-shadow: 0 0 10px #ffffff, 0 0 20px #f87171, 0 0 35px #ef4444 !important;
+}
+
+/* Solo Leveling Glowing Box Titles */
+.title-box {
+    border: 1.5px solid rgba(147, 197, 253, 0.65);
+    background: rgba(10, 25, 50, 0.45);
+    padding: 0.5rem 2.25rem;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.25), inset 0 0 15px rgba(59, 130, 246, 0.15);
+    backdrop-filter: blur(6px);
+}
+
+.title-box h1, .title-box h2, .title-box h3 {
+    color: #ffffff;
+    text-shadow: 0 0 8px #ffffff, 0 0 16px #93c5fd, 0 0 30px #3b82f6;
+    letter-spacing: 3px;
+}
+
+.title-box.danger {
+    border-color: rgba(239, 68, 68, 0.7);
+    background: rgba(50, 10, 10, 0.45);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.25), inset 0 0 15px rgba(239, 68, 68, 0.15);
+}
+
+.title-box.danger h1, .title-box.danger h2, .title-box.danger h3 {
+    color: #ffffff;
+    text-shadow: 0 0 8px #ffffff, 0 0 16px #fca5a5, 0 0 30px #ef4444;
+}
+
+.sub-title-box {
+    border: 1px solid rgba(147, 197, 253, 0.45);
+    background: rgba(10, 25, 50, 0.35);
+    padding: 0.35rem 1.75rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 12px rgba(59, 130, 246, 0.15), inset 0 0 10px rgba(59, 130, 246, 0.1);
+}
+
+.sub-title-box h3 {
+    color: #ffffff;
+    text-shadow: 0 0 6px #ffffff, 0 0 14px #93c5fd, 0 0 22px #3b82f6;
+    letter-spacing: 2px;
+}
+
+.text-center { 
+    text-align: center; 
+}
+
+/* Highlight Colors for text */
+.highlight-green { 
+    color: #4ade80; 
+    font-weight: bold; 
+    text-shadow: 0 0 8px #4ade80, 0 0 18px rgba(34, 197, 94, 0.6); 
+}
+.highlight-red { 
+    color: #f87171; 
+    font-weight: bold; 
+    text-shadow: 0 0 8px #f87171, 0 0 18px rgba(239, 68, 68, 0.6); 
+}
+.highlight-yellow { 
+    color: #fbbf24; 
+    font-weight: bold; 
+    text-shadow: 0 0 8px #fbbf24, 0 0 18px rgba(245, 158, 11, 0.6); 
+}
+
+/* Buttons */
+.btn {
+    background: rgba(4, 11, 30, 0.8);
+    color: var(--sys-light-blue);
+    border: 1.5px solid rgba(147, 197, 253, 0.5);
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.2s ease;
+    font-family: var(--font-system);
+    text-shadow: 0 0 5px var(--sys-light-blue);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15), inset 0 0 10px rgba(59, 130, 246, 0.1);
+}
+
+.btn:hover:not(:disabled), .btn:active:not(:disabled) {
+    background: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.4), inset 0 0 20px rgba(59, 130, 246, 0.4);
+    border-color: var(--sys-light-blue);
+}
+
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+.btn.danger {
+    color: var(--sys-red);
+    border-color: rgba(239, 68, 68, 0.5);
+    text-shadow: 0 0 5px var(--sys-red);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.15), inset 0 0 10px rgba(239, 68, 68, 0.15);
+}
+
+.btn.danger:hover:not(:disabled) {
+    background: rgba(239, 68, 68, 0.2);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), inset 0 0 20px rgba(239, 68, 68, 0.4);
+    border-color: var(--sys-red);
+}
+
+.btn.small { 
+    padding: 0.5rem 1rem; 
+    font-size: 1rem; 
+    margin-top: 0;
+}
+
+/* Solo Leveling Compact Quest Exercise List */
+.exercise-row {
+    display: flex;
+    flex-direction: column;
+    padding: 0.5rem 0;
+    border-bottom: none;
+    transition: all 0.2s ease;
+}
+
+.exercise-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exercise-title-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.exercise-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+.exercise-status-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.exercise-count {
+    color: var(--sys-light-blue);
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+/* Little box beside exercise that gets ticked when complete */
+.quest-box {
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(147, 197, 253, 0.45);
+    background: rgba(4, 11, 30, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    padding: 1px;
+}
+
+.quest-box.checked {
+    border-color: #4ade80;
+    background: rgba(34, 197, 94, 0.15);
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.5), inset 0 0 6px rgba(74, 222, 128, 0.3);
+}
+
+.quest-box svg {
+    width: 15px;
+    height: 15px;
+    display: block;
+    filter: drop-shadow(0 0 4px #4ade80);
+}
+
+.exercise-controls {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    margin-top: 0.25rem;
+}
+
+.exercise-controls button {
+    background: rgba(4, 11, 30, 0.7);
+    color: var(--sys-light-blue);
+    border: 1px solid rgba(147, 197, 253, 0.35);
+    padding: 0.2rem 0.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-system);
+    border-radius: 2px;
+}
+
+.exercise-controls button:hover {
+    background: rgba(59, 130, 246, 0.3);
+    border-color: var(--sys-light-blue);
+}
+
+.exercise-controls button:active {
+    background: rgba(59, 130, 246, 0.5);
+    box-shadow: inset 0 0 8px rgba(59, 130, 246, 0.8);
+}
+
+/* List Items with clean HUD styling (non-exercise) */
+.list { display: flex; flex-direction: column; gap: 0; }
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(147, 197, 253, 0.15);
+}
+.list-item:last-child { border-bottom: none; }
+
+.item-title { font-weight: 600; font-size: 1.15rem; color: #fff; letter-spacing: 0.5px; }
+.item-meta { color: var(--sys-light-blue); font-size: 1.1rem; font-weight: 600; letter-spacing: 0.5px; }
+
+/* Inputs */
+input[type="number"], input[type="text"], select {
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(147, 197, 253, 0.35);
+    color: var(--sys-light-blue);
+    padding: 0.75rem;
+    width: 100%;
+    font-family: var(--font-system);
+    font-size: 1.15rem;
+    font-weight: 600;
+}
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--sys-light-blue);
+    box-shadow: 0 0 10px rgba(147, 197, 253, 0.4);
+}
+
+/* Checkboxes */
+.checkbox {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1.5px solid rgba(147, 197, 253, 0.5);
+    background: rgba(0,0,0,0.5);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 2px;
+}
+.checkbox:checked {
+    background: rgba(34, 197, 94, 0.2);
+    border-color: #4ade80;
+    box-shadow: 0 0 12px rgba(74, 222, 128, 0.5);
+}
+.checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px; top: 2px;
+    width: 5px; height: 11px;
+    border: solid #4ade80;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+/* Bottom Nav */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(2, 6, 23, 0.95);
+    display: flex;
+    justify-content: space-around;
+    padding: 1rem;
+    border-top: 1px solid rgba(147, 197, 253, 0.35);
+    box-shadow: 0 -5px 25px rgba(59, 130, 246, 0.15);
+    z-index: 100;
+    backdrop-filter: blur(10px);
+}
+.nav-btn {
+    background: none;
+    border: none;
+    color: rgba(147, 197, 253, 0.4);
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-system);
+    letter-spacing: 2px;
+}
+.nav-btn.active {
+    color: var(--sys-light-blue);
+    text-shadow: 0 0 10px var(--sys-light-blue);
+}
+
+/* Utilities */
+.view { display: none; animation: fadeIn 0.3s ease; }
+.view.active { display: block; }
+.hidden { display: none !important; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Warning Text */
+.sys-warning {
+    color: var(--sys-red);
+    text-align: center;
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+    text-shadow: 0 0 8px rgba(239, 68, 68, 0.6);
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    color: var(--sys-light-blue);
+    text-shadow: 0 0 5px var(--sys-glow);
+    cursor: pointer;
+    transition: transform 0.2s;
+    letter-spacing: 1px;
+    font-family: var(--font-system);
+}
+.icon-btn:hover { text-shadow: 0 0 15px var(--sys-light-blue); }
+
+/* Penalty Quest Layout Styling */
+.penalty-desc {
+    margin: 1.5rem 0;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.6;
+}
+
+.survival-status {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+}
+
+/* Modal Overlay & Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(2, 6, 23, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 1rem;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.2s ease;
+}
+
+#sys-modal {
+    z-index: 2000; /* Ensure system notifications are always on top */
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.4), inset 0 0 15px rgba(59, 130, 246, 0.25);
+}
+
+/* Solo Leveling Macro Grid */
+.macro-grid-sl {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.macro-card-sl {
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(147, 197, 253, 0.25);
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 4px;
+}
+
+.macro-lbl {
+    font-size: 0.85rem;
+    color: var(--sys-light-blue);
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+.macro-val {
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+/* Settings Meal Presets Styling */
+.settings-meal-macros input {
+    padding: 0.25rem !important;
+    font-size: 0.9rem !important;
+    text-align: center;
+}
+
+/* Dynamic State Color Levels */
+.clr-warn {
+    color: #f59e0b !important;
+    text-shadow: 0 0 8px rgba(245, 158, 11, 0.5) !important;
+    border-color: rgba(245, 158, 11, 0.3) !important;
+}
+
+.clr-ok {
+    color: var(--sys-light-blue) !important;
+    text-shadow: 0 0 8px var(--sys-glow) !important;
+    border-color: rgba(147, 197, 253, 0.3) !important;
+}
+
+.clr-danger {
+    color: var(--sys-red) !important;
+    text-shadow: 0 0 8px var(--sys-red-glow) !important;
+    border-color: rgba(239, 68, 68, 0.3) !important;
+}
+
+.clr-success {
+    color: var(--success) !important;
+    text-shadow: 0 0 8px rgba(34, 197, 94, 0.5) !important;
+    border-color: rgba(34, 197, 94, 0.3) !important;
+}
+
+/* Allow tapping the whole row for list items */
+.list-item {
+    cursor: pointer;
+}
+
+.list-item .checkbox {
+    pointer-events: none; /* Make click-through so parent click handles toggle */
+}

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The System</title>
+    <link rel="stylesheet" href="style.css?v=2.2">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#020617">
+</head>
+<body>
+    <!-- Background Energy Overlay -->
+    <div class="energy-grid"></div>
+    <div class="energy-glow"></div>
+
+    <!-- Custom System Modal -->
+    <div id="sys-modal" class="modal-overlay hidden">
+        <div class="sys-panel modal-content">
+            <div class="win-controls">— ✕</div>
+            <div class="title-box" style="margin-bottom: 1rem;">
+                <h3 id="modal-title">NOTIFICATION</h3>
+            </div>
+            <p id="modal-text" style="margin: 1.5rem 0; font-size: 1.2rem; line-height: 1.5; letter-spacing: 0.5px;"></p>
+            <div id="modal-input-container" class="hidden" style="margin-bottom: 1.5rem; width: 100%;">
+                <input type="text" id="modal-input" placeholder="Enter value...">
+            </div>
+            <div class="modal-buttons" style="display: flex; gap: 1rem; justify-content: center; width: 100%;">
+                <button id="modal-btn-confirm" class="btn small" style="flex:1; margin-top:0;">YES</button>
+                <button id="modal-btn-cancel" class="btn small danger" style="flex:1; margin-top:0;">NO</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Search Modal -->
+    <div id="search-modal" class="modal-overlay hidden">
+        <div class="sys-panel modal-content" style="max-height: 85vh; display: flex; flex-direction: column; width: 95%;">
+            <div class="win-controls">— ✕</div>
+            <div class="title-box" style="margin-bottom: 1rem;">
+                <h3>DATABASE QUERY</h3>
+            </div>
+            <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
+                <input type="text" id="input-search-query" placeholder="Search food (e.g. oats)..." style="flex:1;">
+                <button class="btn small" id="btn-exec-search" style="width: auto; margin-top:0;">QUERY</button>
+            </div>
+            <div id="search-results" class="list" style="overflow-y: auto; flex:1; max-height: 45vh; border: 1px solid rgba(147, 197, 253, 0.2); padding: 0.5rem; background:rgba(0,0,0,0.3); text-align: left;">
+                <p style="color:var(--sys-light-blue); text-align:center; padding:1rem;">Submit a query to scan database...</p>
+            </div>
+            <button class="btn small danger" id="btn-close-search" style="margin-top: 1rem;">CLOSE</button>
+        </div>
+    </div>
+
+    <!-- Edit Adhoc Modal -->
+    <div id="edit-adhoc-modal" class="modal-overlay hidden">
+        <div class="sys-panel modal-content" style="max-height: 90vh; overflow-y: auto; width: 95%;">
+            <div class="win-controls">— ✕</div>
+            <div class="title-box" style="margin-bottom: 1rem;">
+                <h3>UPDATE BUFF STATUS</h3>
+            </div>
+            <div class="list" style="gap:0.75rem; text-align:left;">
+                <div class="vitals-input">
+                    <label class="item-meta">BUFF NAME:</label>
+                    <input type="text" id="edit-adhoc-name">
+                </div>
+                <div class="vitals-input">
+                    <label class="item-meta">CALORIES (kcal):</label>
+                    <input type="number" id="edit-adhoc-cal">
+                </div>
+                <div class="vitals-input">
+                    <label class="item-meta">PROTEIN (g):</label>
+                    <input type="number" id="edit-adhoc-prot">
+                </div>
+                <div class="vitals-input">
+                    <label class="item-meta">CARBOHYDRATES (g):</label>
+                    <input type="number" id="edit-adhoc-carb">
+                </div>
+                <div class="vitals-input">
+                    <label class="item-meta">FATS (g):</label>
+                    <input type="number" id="edit-adhoc-fat">
+                </div>
+                <div class="vitals-input">
+                    <label class="item-meta">SATURATED FATS (g):</label>
+                    <input type="number" id="edit-adhoc-satfat">
+                </div>
+            </div>
+            <div style="display: flex; gap: 8px; margin-top: 1.5rem;">
+                <button id="btn-save-adhoc-edit" class="btn small" style="flex:1; margin-top:0;">APPLY</button>
+                <button id="btn-cancel-adhoc-edit" class="btn small outline" style="flex:1; margin-top:0;">CANCEL</button>
+            </div>
+            <button id="btn-delete-adhoc" class="btn small danger" style="margin-top: 8px; width: 100%;">DELETE BUFF</button>
+        </div>
+    </div>
+
+    <div id="app">
+        <!-- Penalty View -->
+        <div id="view-penalty" class="view hidden">
+            <div class="sys-panel penalty text-center">
+                <div class="win-controls">— ✕</div>
+                <div class="title-box danger">
+                    <h2>PENALTY QUEST: SURVIVAL</h2>
+                </div>
+                <p class="penalty-desc">
+                    Failure to complete the Daily Quest has triggered a penalty. 
+                    You have been transported to the Penalty Zone.
+                </p>
+                <div class="survival-status">
+                    <h3>SURVIVAL REQUIREMENT: 50 REPS</h3>
+                    <h2 class="glow-red"><span id="penalty-reps">[ 0 ]</span> / 50</h2>
+                </div>
+                <div style="display: flex; gap: 8px; justify-content: center; margin: 1.5rem 0;">
+                    <button class="btn danger small" onclick="window.app.addPenaltyReps(1)">+1 REP</button>
+                    <button class="btn danger small" onclick="window.app.addPenaltyReps(10)">+10 REPS</button>
+                </div>
+                <button id="btn-escape-penalty" class="btn danger" onclick="window.app.escapePenalty()" disabled>SURVIVE & ESCAPE</button>
+            </div>
+        </div>
+
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="view active" style="padding-top: 1rem;">
+            
+            <div id="tracking-content">
+                <!-- Status (Home) Tab -->
+                <div id="tab-status" class="tab-content active">
+                    <div class="sys-panel text-center">
+                        <div class="win-controls">— ✕</div>
+                        <div class="title-box">
+                            <h2 id="cycle-title">DAILY QUEST HAS ARRIVED</h2>
+                        </div>
+                        <div>
+                            <button id="btn-cycle-toggle" class="btn primary">ACCEPT QUEST</button>
+                        </div>
+                        <div class="sys-warning hidden" id="cycle-warning">
+                            WARNING: Failure to complete daily quests will result in appropriate penalty.
+                        </div>
+                    </div>
+
+                    <!-- Active Quest Summary -->
+                    <div class="sys-panel hidden" id="cycle-summary">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center" style="margin-bottom: 1rem;">
+                            <div class="sub-title-box"><h3>SYSTEM STATUS LOG</h3></div>
+                        </div>
+                        <div class="list" style="text-align: left;">
+                            <div class="list-item">
+                                <span class="item-title">Training Progress</span>
+                                <span class="item-meta" id="sum-training">[ 0 / 3 MET ]</span>
+                            </div>
+                            <div class="list-item">
+                                <span class="item-title">Sustenance Nutrition</span>
+                                <span class="item-meta" id="sum-sustenance">[ 0 / 0 kcal ]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Override Control -->
+                    <div class="sys-panel" style="border-color: var(--sys-red); box-shadow: 0 0 15px var(--sys-red-glow); margin-top: 2rem;">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center"><div class="title-box danger"><h3>SYSTEM OVERRIDE</h3></div></div>
+                        <button class="btn danger small" onclick="window.app.bypassPenaltyAdmin()" style="width:100%;">BYPASS ACTIVE PENALTY</button>
+                    </div>
+                </div>
+
+                <!-- Training (Exercises) Tab -->
+                <div id="tab-exercises" class="tab-content hidden">
+                    <div class="sys-panel">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center" style="margin-bottom: 1rem;">
+                            <div class="sub-title-box"><h3>QUEST INFO</h3></div>
+                        </div>
+                        <div id="exercise-list" class="list"></div>
+                    </div>
+
+                    <!-- Toggle Button & Exercises Configuration Drawer -->
+                    <button id="btn-toggle-training-settings" class="btn outline small" style="margin-top: 1.5rem; width:100%;">CONFIGURE TRAINING</button>
+                    <div id="panel-training-settings" class="sys-panel hidden" style="margin-top: 1rem; border-color: rgba(147, 197, 253, 0.4);">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center"><div class="title-box"><h3>TRAINING TARGETS</h3></div></div>
+                        <div id="settings-exercise-list" class="list"></div>
+                    </div>
+                </div>
+
+                <!-- Sustenance (Meals/Macros) Tab -->
+                <div id="tab-meals" class="tab-content hidden">
+                    <!-- Sustenance Target Status Cards -->
+                    <div class="sys-panel" id="macro-status-card">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center" style="margin-bottom: 1rem;">
+                            <div class="sub-title-box"><h3>QUEST NUTRITION</h3></div>
+                        </div>
+                        <div class="macro-grid-sl">
+                            <div class="macro-card-sl">
+                                <span class="macro-lbl">Calories</span>
+                                <span class="macro-val" id="curr-calories">[ 0 / 0 kcal ]</span>
+                            </div>
+                            <div class="macro-card-sl">
+                                <span class="macro-lbl">Protein</span>
+                                <span class="macro-val" id="curr-protein">[ 0 / 0 g ]</span>
+                            </div>
+                            <div class="macro-card-sl">
+                                <span class="macro-lbl">Carbs</span>
+                                <span class="macro-val" id="curr-carbs">[ 0 / 0 g ]</span>
+                            </div>
+                            <div class="macro-card-sl">
+                                <span class="macro-lbl">Fats</span>
+                                <span class="macro-val" id="curr-fats">[ 0 / 0 g ]</span>
+                            </div>
+                            <div class="macro-card-sl" style="grid-column: span 2;">
+                                <span class="macro-lbl">Saturated Fats</span>
+                                <span class="macro-val" id="curr-satfats">[ 0 / 0 g ]</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sys-panel">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center" style="margin-bottom: 1rem;">
+                            <div class="sub-title-box"><h3>SUSTENANCE</h3></div>
+                        </div>
+                        <div id="meal-list" class="list"></div>
+                        <div style="display: flex; gap: 8px; margin-top: 1.5rem;">
+                            <button id="btn-add-adhoc-meal" class="btn small" style="flex: 1; margin-top:0;">+ MANUAL BUFF</button>
+                            <button id="btn-search-food" class="btn small outline" style="flex: 1; margin-top:0;">🔍 DB SEARCH</button>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Button & Sustenance Configuration Drawer -->
+                    <button id="btn-toggle-meals-settings" class="btn outline small" style="margin-top: 1.5rem; width:100%;">CONFIGURE SUSTENANCE</button>
+                    <div id="panel-meals-settings" class="sys-panel hidden" style="margin-top: 1rem; border-color: rgba(147, 197, 253, 0.4);">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center"><div class="title-box"><h3>SUSTENANCE TEMPLATE</h3></div></div>
+                        <div id="settings-meal-list" class="list"></div>
+                        <button id="btn-settings-add-meal" class="btn small" style="margin-top: 1.5rem; width:100%;">+ ADD BASE MEAL</button>
+                    </div>
+                </div>
+
+                <!-- Stats Tab -->
+                <div id="tab-vitals" class="tab-content hidden">
+                    <div class="sys-panel">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center" style="margin-bottom: 1rem;">
+                            <div class="sub-title-box"><h3>STATS</h3></div>
+                        </div>
+                        <div class="list-item" style="border:none;">
+                            <label class="item-title">WEIGHT (<span id="lbl-weight-unit">kg</span>):</label>
+                            <input type="number" id="input-weight" step="0.1" style="width: 120px; text-align:right;">
+                        </div>
+                        <div class="list-item" style="border:none; justify-content: center; margin-top: 1rem; border-top: 1px solid rgba(147, 197, 253, 0.2); padding-top: 1.5rem;">
+                            <h2 style="font-size: 2rem;">BMI: <span id="display-bmi">--</span></h2>
+                        </div>
+                    </div>
+
+                    <!-- Toggle Button & Player Profile Configuration Drawer -->
+                    <button id="btn-toggle-vitals-settings" class="btn outline small" style="margin-top: 1.5rem; width:100%;">CONFIGURE PROFILE</button>
+                    <div id="panel-vitals-settings" class="sys-panel hidden" style="margin-top: 1rem; border-color: rgba(147, 197, 253, 0.4);">
+                        <div class="win-controls">— ✕</div>
+                        <div class="text-center"><div class="title-box"><h3>PLAYER CONFIG</h3></div></div>
+                        <div class="list" style="gap:0.75rem;">
+                            <div class="list-item" style="border:none; flex-direction:column; align-items:flex-start; padding: 0.5rem 0;">
+                                <label class="item-meta">HEIGHT UNIT:</label>
+                                <select id="pref-height-unit" onchange="window.app.updatePref('heightUnit', this.value)">
+                                    <option value="cm">CENTIMETERS</option>
+                                    <option value="ft">FEET & INCHES</option>
+                                </select>
+                            </div>
+                            <div class="list-item" style="border:none; flex-direction:column; align-items:flex-start; padding: 0.5rem 0;">
+                                <label class="item-meta">WEIGHT UNIT:</label>
+                                <select id="pref-weight-unit" onchange="window.app.updatePref('weightUnit', this.value)">
+                                    <option value="kg">KILOGRAMS</option>
+                                    <option value="lbs">POUNDS</option>
+                                </select>
+                            </div>
+                            <div class="list-item" style="border:none; flex-direction:column; align-items:flex-start; padding: 0.5rem 0;">
+                                <label class="item-meta">FITNESS GOAL:</label>
+                                <select id="pref-fitness-goal" onchange="window.app.updatePref('fitnessGoal', this.value)">
+                                    <option value="maintain">MAINTAIN WEIGHT</option>
+                                    <option value="cut">WEIGHT LOSS (CUT)</option>
+                                    <option value="bulk">WEIGHT GAIN (BULK)</option>
+                                </select>
+                            </div>
+                            <!-- Height inputs -->
+                            <div class="list-item" id="setting-height-cm-group" style="border:none; padding: 0.5rem 0;">
+                                <label class="item-title">HEIGHT (cm):</label>
+                                <input type="number" id="setting-height-cm" onchange="window.app.updateHeight('cm', this.value)" style="width:120px;">
+                            </div>
+                            <div class="list-item hidden" id="setting-height-ft-group" style="border:none; padding: 0.5rem 0;">
+                                <label class="item-title">HEIGHT:</label>
+                                <div style="display: flex; gap: 0.5rem; justify-content:flex-end;">
+                                    <input type="number" id="setting-height-ft" placeholder="FT" onchange="window.app.updateHeight('ft', this.value)" style="width:80px;">
+                                    <input type="number" id="setting-height-in" placeholder="IN" onchange="window.app.updateHeight('in', this.value)" style="width:80px;">
+                                </div>
+                            </div>
+                            <!-- Target Weight Input -->
+                            <div class="list-item" style="border:none; padding: 0.5rem 0;">
+                                <label class="item-title">TARGET WEIGHT (<span id="pref-target-weight-unit">kg</span>):</label>
+                                <input type="number" id="setting-target-weight" onchange="window.app.updateTargetWeight(this.value)" style="width:120px;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bottom Navigation -->
+                <nav class="bottom-nav">
+                    <button class="nav-btn active" data-tab="status" onclick="window.app.switchTab('status')">STATUS</button>
+                    <button class="nav-btn" data-tab="exercises" onclick="window.app.switchTab('exercises')">TRAINING</button>
+                    <button class="nav-btn" data-tab="meals" onclick="window.app.switchTab('meals')">SUSTENANCE</button>
+                    <button class="nav-btn" data-tab="vitals" onclick="window.app.switchTab('vitals')">STATS</button>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js?v=2.2"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registered!'))
+                .catch(err => console.error('SW failed!', err));
+        }
+    </script>
+</body>
+</html>
