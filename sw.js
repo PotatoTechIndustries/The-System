@@ -1,17 +1,20 @@
-const CACHE_NAME = 'the-system-v2';
+const CACHE_NAME = 'the-system-v3';
 const ASSETS = [
     './',
     './index.html',
     './style.css',
     './app.js',
-    './manifest.json'
+    './manifest.json',
+    './icon-192.png',
+    './icon-512.png',
+    './apple-touch-icon.png'
 ];
 
 self.addEventListener('install', (e) => {
     e.waitUntil(
         caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
     );
-    self.skipWaiting(); // Force the waiting service worker to activate immediately
+    self.skipWaiting();
 });
 
 self.addEventListener('activate', (e) => {
@@ -26,11 +29,10 @@ self.addEventListener('activate', (e) => {
             );
         })
     );
-    self.clients.claim(); // Claim clients immediately so the page is controlled
+    self.clients.claim();
 });
 
 self.addEventListener('fetch', (e) => {
-    // Network-first strategy: always fetch the latest files online if possible, fallback to cache if offline
     e.respondWith(
         fetch(e.request)
             .then((res) => {
