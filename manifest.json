@@ -1,9 +1,11 @@
 {
   "name": "The System",
   "short_name": "The System",
+  "id": "/The-System/",
   "start_url": "/The-System/",
   "scope": "/The-System/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#020612",
   "theme_color": "#020612",
   "description": "Solo Leveling Daily Quest & Fitness Tracking HUD",
