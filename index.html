@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <link rel="icon" type="image/png" href="icon-192.png">
 
-    <link rel="stylesheet" href="style.css?v=2.3">
+    <link rel="stylesheet" href="style.css?v=2.6">
 </head>
 <body>
     <!-- Background Energy Overlay -->
@@ -158,13 +158,6 @@
                                 <span class="item-meta" id="sum-sustenance">[ 0 / 0 kcal ]</span>
                             </div>
                         </div>
-                    </div>
-
-                    <!-- System Override Control -->
-                    <div class="sys-panel" style="border-color: var(--sys-red); box-shadow: 0 0 15px var(--sys-red-glow); margin-top: 2rem;">
-                        <div class="win-controls">— ✕</div>
-                        <div class="text-center"><div class="title-box danger"><h3>SYSTEM OVERRIDE</h3></div></div>
-                        <button class="btn danger small" onclick="window.app.bypassPenaltyAdmin()" style="width:100%;">BYPASS ACTIVE PENALTY</button>
                     </div>
                 </div>
 
@@ -317,7 +310,7 @@
         </div>
     </div>
 
-    <script src="app.js?v=2.3"></script>
+    <script src="app.js?v=2.6"></script>
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js')

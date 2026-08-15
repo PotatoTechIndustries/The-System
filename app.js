@@ -395,8 +395,8 @@ function render() {
         cycleTitle.innerHTML = "DAILY <span class='highlight-green'>QUEST</span> IN PROGRESS";
         cycleTitle.style.color = "var(--sys-light-blue)";
         toggleBtn.innerText = "COMPLETE QUEST (SLEEP)";
-        toggleBtn.className = "btn danger";
-        cycleWarning.innerHTML = "(WARNING: FAILURE TO COMPLETE DAILY QUESTS WILL RESULT IN APPROPRIATE <span class='highlight-red'>PENALTY</span>.)";
+        toggleBtn.className = "btn";
+        cycleWarning.innerHTML = "(WARNING: Failure to complete daily quests will result in appropriate <span class='highlight-red'>penalty</span>.)";
         cycleWarning.classList.remove('hidden');
         cycleSummary.classList.remove('hidden');
 
@@ -525,26 +525,27 @@ function render() {
 
         // Render Meals list
         mealList.innerHTML = '';
+        const checkSvg = `<svg viewBox="0 0 20 20" fill="none" stroke="#4ade80" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"><polyline points="3,10.5 7.5,15 16.5,4.5"/></svg>`;
         state.baseMeals.forEach(meal => {
             const isDone = state.currentCycle.meals[meal.id];
             mealList.innerHTML += `
-                <div class="list-item" style="opacity: ${isDone ? '0.5' : '1'}; transition: opacity 0.2s;" onclick="window.app.toggleMeal('${meal.id}')">
-                    <span class="item-title" style="font-size: 0.95rem;">${meal.name}</span>
-                    <input type="checkbox" class="checkbox" ${isDone ? 'checked' : ''}>
+                <div class="meal-row" style="opacity: ${isDone ? '0.45' : '1'};" onclick="window.app.toggleMeal('${meal.id}')">
+                    <span class="meal-name">${meal.name}</span>
+                    <div class="quest-box ${isDone ? 'checked' : ''}">${isDone ? checkSvg : ''}</div>
                 </div>
             `;
         });
         
         if(state.currentCycle.adHocMeals && state.currentCycle.adHocMeals.length > 0) {
-            mealList.innerHTML += `<div style="margin-top: 1rem; color: var(--sys-light-blue); font-size: 0.8rem; text-transform: uppercase; font-weight: bold;">Temporary Additions (Tap to Edit)</div>`;
+            mealList.innerHTML += `<div style="margin: 0.75rem 0 0.25rem 0; color: var(--sys-light-blue); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.5px;">Temporary Additions (Tap to Edit)</div>`;
             state.currentCycle.adHocMeals.forEach(meal => {
                 mealList.innerHTML += `
-                    <div class="list-item" style="cursor:pointer;" onclick="window.app.editAdhocMeal('${meal.id}')">
-                        <div style="flex-grow:1;">
-                            <span class="item-title" style="font-size: 0.95rem; color: var(--text-muted);">${meal.name}</span>
-                            <span class="item-meta" style="font-size:0.8rem;">${meal.calories || 0} kcal | P: ${meal.protein || 0}g</span>
+                    <div class="meal-row" style="background: rgba(147, 197, 253, 0.05);" onclick="window.app.editAdhocMeal('${meal.id}')">
+                        <div style="flex-grow:1; padding-right: 0.5rem;">
+                            <span class="meal-name" style="font-size: 0.95rem; color: #ffffff;">${meal.name}</span>
+                            <div class="item-meta" style="font-size:0.8rem; color: var(--sys-light-blue);">${meal.calories || 0} kcal | P: ${meal.protein || 0}g</div>
                         </div>
-                        <span class="item-meta">Ad-hoc ⚙️</span>
+                        <span class="item-meta" style="font-size: 0.85rem;">⚙️ Edit</span>
                     </div>
                 `;
             });
