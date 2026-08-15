@@ -1,7 +1,8 @@
 {
   "name": "The System",
   "short_name": "The System",
-  "start_url": "./",
+  "start_url": "/The-System/",
+  "scope": "/The-System/",
   "display": "standalone",
   "background_color": "#020612",
   "theme_color": "#020612",
